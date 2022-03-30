@@ -12,7 +12,7 @@ export class Product {
     amount: number
 
     @Column({nullable: true})
-    belongToUser: string
+    userId: string
     
     @CreateDateColumn()
     created: Date

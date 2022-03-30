@@ -1,9 +1,9 @@
 ﻿import {ApiProperty} from "@nestjs/swagger";
 
-export class ReturnUserDto{
+export class ReturnUserDto {
     @ApiProperty()
-    id:string
-    
+    id: string
+
     @ApiProperty()
-    accountName:string
+    accountName: string
 }

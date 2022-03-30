@@ -1,27 +1,55 @@
 ﻿import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
-import {Observable,Subject,from, tap,switchMap,AsyncSubject} from "rxjs";
+import {Observable} from "rxjs";
 import {AuthService} from "./auth.service";
+import {JwtService} from "@nestjs/jwt";
 
 @Injectable()
-export class CheckJwtGuard implements CanActivate{
-    constructor(private authService: AuthService) {
+export class CheckJwtGuard implements CanActivate {
+    constructor(private authService: AuthService, private jwtService:JwtService) {
     }
-    subject: any;
 
-    canActivate(context:ExecutionContext): boolean | Observable<boolean> | Promise<boolean>{
+    canActivate(context: ExecutionContext): boolean | Observable<boolean> | Promise<boolean> {
         const request = context.switchToHttp().getRequest();
-        console.log('request', request.body)
-        let result = {};
-        return new Promise<void>((resolve, reject) =>{
-            this.authService.validateUserCredentials(request.body.accountName, request.body.password) .subscribe((res)=>{
+        let result:any;
+        return new Promise<void>((resolve, reject) => {
+            this.authService.validateUserCredentials(request.body.accountName, request.body.password).subscribe((res) => {
                 resolve();
                 result = {...res};
             })
-        }).then((res) =>{
-            request.body.id = result['_id']
-            console.log('result',result)
-            return !!Object.keys(result).length;
-            
+        }).then((res) => {
+            request.body.id = result.data._id
+            console.log('CheckJwtGuard/canActive/result', result.data)
+            console.log('CheckJwtGuard/canActive/request.body', request.body)
+            return request.body.id != undefined;
         })
+
+        // Huy's playground below
+
+        // this.authService.validateUserCredentials(request.body.accountName, request.body.password).pipe(
+        //     tap((res) => {
+        //         result = {...res.data}
+        //         console.log('result data', result)
+        //     })
+        // ).subscribe((res)=> {
+        //     return  result = {...res.data};
+        // });
+        // console.log('result',result);
+        // return !!Object.keys(result).length;
+    }
+}
+
+@Injectable()
+export class VerifyJwtGuard implements CanActivate {
+    constructor(private jwtService:JwtService) {
+    }
+
+    canActivate(context: ExecutionContext): boolean | Observable<boolean> | Promise<boolean> {
+        const request = context.switchToHttp().getRequest();
+        const jwtToken:string = request.rawHeaders[1];
+        const decodedJwt = this.jwtService.decode(jwtToken.split(' ')[1])
+        const userId = decodedJwt.sub
+        console.log('VerifyJwtGuard/userId', userId);
+        request.body.userId = userId
+        return true
     }
 }
