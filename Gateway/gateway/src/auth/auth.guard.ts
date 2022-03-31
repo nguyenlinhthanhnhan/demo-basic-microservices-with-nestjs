@@ -50,6 +50,10 @@ export class VerifyJwtGuard implements CanActivate {
         const userId = decodedJwt.sub
         console.log('VerifyJwtGuard/userId', userId);
         request.body.userId = userId
+        if(request.url.includes('?')) {
+            request.url = `${request.url}&userId=${userId}`
+            console.log(request.url)
+        }
         return true
     }
 }

@@ -7,6 +7,6 @@ export class CreateProductDto {
     @ApiProperty()
     amount: number
 
-    @ApiProperty()
+    @ApiProperty({nullable:true})
     userId: string
 }

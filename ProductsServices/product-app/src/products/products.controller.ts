@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Req, Query} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
+import {FilterProductDto} from "./dto/filter-product.dto";
 
 @Controller('products')
 export class ProductsController {
@@ -19,8 +20,9 @@ export class ProductsController {
   @ApiOperation({ summary: 'Find all products' })
   @ApiResponse({ status: 200, description: 'OK' })
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  findAll(@Query() inputFilter: FilterProductDto) {
+    console.log('inputFilter', inputFilter)
+    return this.productsService.findAll(inputFilter);
   }
 
   @ApiOperation({ summary: 'Get one product' })

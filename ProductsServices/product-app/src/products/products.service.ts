@@ -3,7 +3,8 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Product} from "./entities/product.entity";
-import {Repository} from 'typeorm'
+import {Repository, Like} from 'typeorm'
+import {FilterProductDto} from "./dto/filter-product.dto";
 
 @Injectable()
 export class ProductsService {
@@ -19,8 +20,16 @@ export class ProductsService {
     return this.productRepository.save(obj)
   }
 
-  findAll() {
-    return this.productRepository.find();
+  findAll(inputFilter: FilterProductDto) {
+    const listObjKeys = Object.keys(inputFilter)
+    if(listObjKeys.length > 0){
+      const filterObj = {};
+      for(let i = 0; i<listObjKeys.length; i++){
+        filterObj[`${listObjKeys[i]}`] = Like(`%${inputFilter[`${listObjKeys[i]}`]}%`)
+      }
+      return this.productRepository.find({where: {...filterObj}});  
+    }
+    return this.productRepository.find()
   }
 
   findOne(id: number) {
