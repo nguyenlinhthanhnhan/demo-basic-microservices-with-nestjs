@@ -44,8 +44,7 @@ export class UsersService {
   async findAccount(accountName:string, password:string):Promise<ReturnUserDto>{
     let user = await this.userModel.findOne({accountName:accountName}).exec()
     if(user){
-      const salt = user.salt
-      if((await bcrypt.hash(password, salt)) === user.password){
+      if(await bcrypt.compare(password, user.password)){
         return <ReturnUserDto>user
       }  
     }
