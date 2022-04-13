@@ -1,19 +1,20 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Req, Query} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Req, Query, UseGuards, Request} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 import {FilterProductDto} from "./dto/filter-product.dto";
+import {NonPublicApi} from "../auth/auth.guard";
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @UseGuards(NonPublicApi)
   @ApiResponse({ status: 200, description: 'OK' })
   @ApiOperation({ summary: 'Create product' })
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
-    console.log('createProduct/createProductDto', createProductDto)
     return this.productsService.create(createProductDto);
   }
 
@@ -21,7 +22,6 @@ export class ProductsController {
   @ApiResponse({ status: 200, description: 'OK' })
   @Get()
   findAll(@Query() inputFilter: FilterProductDto) {
-    console.log('inputFilter', inputFilter)
     return this.productsService.findAll(inputFilter);
   }
 

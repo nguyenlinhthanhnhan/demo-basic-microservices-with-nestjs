@@ -18,8 +18,6 @@ export class CheckJwtGuard implements CanActivate {
             })
         }).then((res) => {
             request.body.id = result.data._id
-            console.log('CheckJwtGuard/canActive/result', result.data)
-            console.log('CheckJwtGuard/canActive/request.body', request.body)
             return request.body.id != undefined;
         })
 
@@ -47,12 +45,10 @@ export class VerifyJwtGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const jwtToken:string = request.rawHeaders[1];
         const decodedJwt = this.jwtService.decode(jwtToken.split(' ')[1])
-        const userId = decodedJwt.sub
-        console.log('VerifyJwtGuard/userId', userId);
+        const userId = decodedJwt?.sub
         request.body.userId = userId
         if(request.url.includes('?')) {
             request.url = `${request.url}&userId=${userId}`
-            console.log(request.url)
         }
         return true
     }
