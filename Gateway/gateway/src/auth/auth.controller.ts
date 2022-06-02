@@ -19,7 +19,6 @@ export class AuthController {
     @UseGuards(CheckJwtGuard)
     @Post()
     async login(@Body() req: LoginDto) {
-        console.log('login/req', req)
         return await this.authService.loginWithCredentials(req)
     }
 }
