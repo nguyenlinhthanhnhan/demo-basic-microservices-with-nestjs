@@ -18,7 +18,7 @@ export class CheckJwtGuard implements CanActivate {
             })
         }).then((res) => {
             request.body.id = result.data._id
-            request.body.role = result.data.role
+            request.body.roles = result.data.roles
             return request.body.id != undefined;
         })
     }

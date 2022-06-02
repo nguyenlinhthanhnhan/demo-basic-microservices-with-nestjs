@@ -9,5 +9,5 @@ export class ReturnUserDto {
     accountName: string;
 
     @ApiProperty({enum: Role})
-    role:Role
+    roles:Role[]
 }

@@ -16,7 +16,7 @@ export class User{
     password: string;
     
     @Prop({required:true})
-    role:Role
+    roles:Role[]
     
     @Prop()
     salt: string

@@ -9,5 +9,5 @@ export class CheckUserDto {
     password: string;
 
     @ApiProperty()
-    role:Role
+    roles:Role[]
 }
