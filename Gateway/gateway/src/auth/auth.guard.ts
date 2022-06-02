@@ -18,21 +18,10 @@ export class CheckJwtGuard implements CanActivate {
             })
         }).then((res) => {
             request.body.id = result.data._id
+            request.body.role = result.data.role
+            console.log('request.body.role', request.body.role)
             return request.body.id != undefined;
         })
-
-        // Huy's playground below
-
-        // this.authService.validateUserCredentials(request.body.accountName, request.body.password).pipe(
-        //     tap((res) => {
-        //         result = {...res.data}
-        //         console.log('result data', result)
-        //     })
-        // ).subscribe((res)=> {
-        //     return  result = {...res.data};
-        // });
-        // console.log('result',result);
-        // return !!Object.keys(result).length;
     }
 }
 

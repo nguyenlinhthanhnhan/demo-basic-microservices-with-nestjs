@@ -32,7 +32,7 @@ export class ProductsService {
     return this.productRepository.find()
   }
 
-  findOne(id: number) {
+  findOne(id: any) {
     return this.productRepository.findOne(id)
   }
 
@@ -40,7 +40,7 @@ export class ProductsService {
     return this.productRepository.update(id, updateProductDto)
   }
 
-  async remove(id: number) {
+  async remove(id: any) {
     const objToRemove = await this.productRepository.findOne(id)
     return this.productRepository.softRemove(objToRemove)
   }
