@@ -1,5 +1,6 @@
-# MicroserviceLearn
+# Demo basic microservices with nestjs
 ## App use for demo microservices with point of view from newbie in Microservices pattern
+## It use stupid method: HTTP protocol, when in real app, we must use gRPC or message queue for application communication
 
 ### How to run
 #### Prerequisite
